@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp14
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            ITransport petrolEngine = new PetrolEngine();
+            ITransport electricEngine = new ElectricEngine();
+
+            Bridge bridge = new Bridge(petrolEngine);
+            bridge.Car();
+            //bridge.Truck();
+
+            bridge = new Bridge(electricEngine);
+            //bridge.Car();
+            bridge.Truck();
+        }
+    }
+
+    public interface ITransport
+    {
+        void Car();
+
+        void Truck();
+    }
+
+    public class PetrolEngine : ITransport
+    {
+        public void Car()
+        {
+            Console.WriteLine("Автомобиль с бензиновым двигателем едет.");
+        }
+
+        public void Truck()
+        {
+            Console.WriteLine("Грузовик с бензиновым двигателем перевозит груз.");
+        }
+    }
+
+    public class ElectricEngine : ITransport
+    {
+        public void Car()
+        {
+            Console.WriteLine("Автомобиль с электрическим двигателем едет.");
+        }
+
+        public void Truck()
+        {
+            Console.WriteLine("Грузовик с электрическим двигателем перевозит груз.");
+        }
+    }
+
+    public class Bridge
+    {
+        public ITransport transport;
+
+        public Bridge(ITransport transport)
+        {
+            this.transport = transport;
+        }
+
+        public virtual void Car() 
+        {
+            transport.Car();
+        }
+
+        public virtual void Truck()
+        {
+            transport.Truck();
+        }
+    }
+}
