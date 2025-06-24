@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace 2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Folder myComputer = new Folder("Мой Компьютер"); 
+
+            Folder documents = new Folder("Документы");
+            Folder music = new Folder("Музыка");
+
+            File referat = new File("Реферат.docx");
+            File list = new File("Список.xlsx");
+            File song = new File("Песня.mp3");
+            File readme = new File("README.txt");
+
+            documents.Add(referat);
+            documents.Add(list);
+            music.Add(song);
+
+            myComputer.Add(documents);
+            myComputer.Add(music);
+            myComputer.Add(readme);
+
+            myComputer.Display(0);
+        }
+    }
+
+    public interface IGeneral
+    {
+        void Display(int spaces);
+    }
+
+    public class File : IGeneral
+    {
+        private string name;
+
+        public File(string name)
+        {
+            this.name = name;
+        }
+
+        public void Display(int spaces)
+        {
+            for (int i = 0; i < spaces; i++)
+            {
+                Console.Write("  ");
+            }
+            Console.WriteLine("Файл: " + name);
+        }
+    }
+
+    public class Folder : IGeneral
+    {
+        private string name;
+        private List<IGeneral> components = new List<IGeneral>();
+
+        public Folder(string name)
+        {
+            this.name = name;
+        }
+
+        public void Add(IGeneral component)
+        {
+            components.Add(component);
+        }
+
+        public void Remove(IGeneral component)
+        {
+            components.Remove(component);
+        }
+
+        public void Display(int spaces)
+        {
+            for (int i = 0; i < spaces; i++)
+            {
+                Console.Write("  ");
+            }
+            Console.WriteLine($"Папка: {name}");
+            foreach (var component in components)
+            {
+                component.Display(spaces + 1);
+            }
+        }
+    }
+}
